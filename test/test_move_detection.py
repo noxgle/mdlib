@@ -1,5 +1,5 @@
 import cv2
-import MoveDetection
+from mdlib import MoveDetection
 
 cap = cv2.VideoCapture(0)
 MD = MoveDetection()
