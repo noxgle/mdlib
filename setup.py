@@ -11,5 +11,5 @@ setup(name='mdlib',
       packages=['mdlib'],
       include_package_data=True,
       zip_safe=False,
-      install_requires=['numpy', 'cv2']
+      install_requires=['numpy', 'opencv-python']
       )
