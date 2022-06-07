@@ -6,7 +6,7 @@ from mdlib.utils import resize2SquareKeepingAspectRation
 
 class MoveDetection:
     '''
-    MoveDetect is used to detect motion on downsize image (frame).
+    MoveDetect is used to detect motion on resized image (frame).
     '''
 
     def __init__(self, resize_to_size=100, resize_interpolation=cv2.INTER_NEAREST, gaussian_blur_ksize=(5, 5),
