@@ -61,7 +61,7 @@ if MD.check() is True:
 #### draw_contour_on_original_frame
         Draw contours on original frame.
 
-        :param frame: image (frame)
+        :param frame: original image (frame)
         :param color: rectangle color, default: (0, 255, 0)
         :param thickness: rectangle thickness, default 1
         :return: image (frame)
@@ -69,7 +69,6 @@ if MD.check() is True:
 #### draw_contour_on_resized_frame
         Draw contours on resized frame.
 
-        :param frame: image (frame)
         :param color: rectangle color, default: (0, 255, 0)
         :param thickness: rectangle thickness, default: 1
         :return: image (frame)
