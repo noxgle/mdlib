@@ -26,9 +26,10 @@ if MD.check() is True:
     print('Move detect')
 ```
 
-## Move detection
-### Class description
+## Class and methods description
+### MoveDetection() 
 #### init
+        All parm except are predefined.    
 
         :param resize_to_size: resize image (frame) before motion detect for lower CPU usage, default: 100px
         :param resize_interpolation: resize interpolation, default: cv2.INTER_NEAREST
