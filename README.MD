@@ -27,7 +27,8 @@ if MD.check() is True:
 ```
 
 ## Move detection
-### Init function class
+### Class description
+#### init
 
         :param resize_to_size: resize image (frame) before motion detect for lower CPU usage, default: 100px
         :param resize_interpolation: resize interpolation, default: cv2.INTER_NEAREST
@@ -39,3 +40,35 @@ if MD.check() is True:
         :param contour_size_detection: the minimum size of the object that must be detected, default: 50
         :param keep_ascpect_ratio: downsize image with keep aspect ratio, default: True
 
+#### check
+        Check if motion has been detected.
+
+        :param new_frame: image (frame)
+        :return: True if detected object or False if not
+        
+#### get_original_contour
+        Get the coordinates of the detected motion for the original image.
+
+        :param frame: image (frame)
+        :return: contours for detected object
+
+#### get_resized_contour
+        Get the coordinates of the detected motion for the resized image.
+
+        :return: contours for detected object
+
+#### draw_contour_on_original_frame
+        Draw contours on original frame.
+
+        :param frame: image (frame)
+        :param color: rectangle color, default: (0, 255, 0)
+        :param thickness: rectangle thickness, default 1
+        :return: image (frame)
+
+#### draw_contour_on_resized_frame
+        Draw contours on resized frame.
+
+        :param frame: image (frame)
+        :param color: rectangle color, default: (0, 255, 0)
+        :param thickness: rectangle thickness, default: 1
+        :return: image (frame)
