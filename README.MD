@@ -34,7 +34,7 @@ if MD.check() is True:
 
 #### init
 
-        All parm except are predefined.    
+        All parm are predefined.    
 
         :param resize_to_size: resize image (frame) before motion detect for lower CPU usage, default: 100px
         :param resize_interpolation: resize interpolation, default: cv2.INTER_NEAREST
