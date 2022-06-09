@@ -77,7 +77,6 @@ if MD.check() is True:
 
         Get the one combined rectangle data of the detected motion for the resized image.
 
-        :param frame: image (frame)
         :return: [[x,y,w,h]] for detected object
 
 #### draw_original

@@ -160,11 +160,10 @@ class MoveDetection:
             rect_coordinates.append([x1, y1, w, h])
         return rect_coordinates
 
-    def get_resize_combined(self, frame):
+    def get_resize_combined(self):
         """
         Get the one combined rectangle data of the detected motion for the resized image.
 
-        :param frame: image (frame)
         :return: [[x,y,w,h]] for detected object
         """
         x1_list = []
