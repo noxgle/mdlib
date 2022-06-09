@@ -1,6 +1,6 @@
 # mdlib
 
-Mdlib is used to detect motion on resized image (frame). 
+Mdlib is used to detect motion on resized image (frame).
 
 ## Inataltion
 
@@ -12,14 +12,16 @@ At the moment, the installation looks like this :
 
 * OpenCV
 
-### Test 
+### Test
 
 Checkout test_move_detection.py in test folder.
 
 ### Example usage
+
 ```python
 import cv2
 from mdlib import MoveDetection
+
 cap = cv2.VideoCapture(0)
 MD = MoveDetection()
 if MD.check() is True:
@@ -27,8 +29,11 @@ if MD.check() is True:
 ```
 
 ## Class and methods description
-### MoveDetection() 
+
+### MoveDetection()
+
 #### init
+
         All parm except are predefined.    
 
         :param resize_to_size: resize image (frame) before motion detect for lower CPU usage, default: 100px
@@ -42,33 +47,54 @@ if MD.check() is True:
         :param keep_ascpect_ratio: downsize image with keep aspect ratio, default: True
 
 #### check
+
         Check if motion has been detected.
 
         :param new_frame: image (frame)
         :return: True if detected object or False if not
-        
-#### get_original_contour
-        Get the coordinates of the detected motion for the original image.
+
+#### get_original
+
+        Get the rectangles data of the detected motion for the original image.
 
         :param frame: image (frame)
-        :return: contours for detected object
+        :return: [[x,y,w,h]] for detected object
 
-#### get_resized_contour
-        Get the coordinates of the detected motion for the resized image.
+#### get_original_combined
 
-        :return: contours for detected object
+        Get the one combined rectangle data of the detected motion for the original image.
 
-#### draw_contour_on_original_frame
-        Draw contours on original frame.
+        :param frame: image (frame)
+        :return: [[x,y,w,h]] for detected object
+
+#### get_resize
+
+        Get the rectangles data of the detected motion for the resized image.
+
+        :return: [[x,y,w,h]] for detected object
+
+#### get_resize_combined
+
+        Get the one combined rectangle data of the detected motion for the resized image.
+
+        :param frame: image (frame)
+        :return: [[x,y,w,h]] for detected object
+
+#### draw_original
+
+        Draw a rectangle in the area where motion has been detected on original frame.
 
         :param frame: original image (frame)
         :param color: rectangle color, default: (0, 255, 0)
-        :param thickness: rectangle thickness, default 1
+        :param thickness: rectangle thickness, default: 1
+        :param combined: if True return one combined rectangle data, default: False
         :return: image (frame)
 
-#### draw_contour_on_resized_frame
-        Draw contours on resized frame.
+#### draw_resized
+
+        Draw a rectangle in the area where motion has been detected on resized frame.
 
         :param color: rectangle color, default: (0, 255, 0)
         :param thickness: rectangle thickness, default: 1
+        :param combined: if True return one combined rectangle data, default: False
         :return: image (frame)
