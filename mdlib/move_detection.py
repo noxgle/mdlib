@@ -5,14 +5,14 @@ from mdlib.utils import resize2SquareKeepingAspectRation
 
 
 class MoveDetection:
-    '''
+    """
     MoveDetect is used to detect motion on resized image (frame).
-    '''
+    """
 
     def __init__(self, resize_to_size=100, resize_interpolation=cv2.INTER_NEAREST, gaussian_blur_ksize=(5, 5),
                  gaussian_blur_sigmax=0, dilate_kernel=(5, 5), threshold_tresh=20, threshold_maxval=255,
                  contour_size_detection=50, keep_ascpect_ratio=True):
-        '''
+        """
         Init class.
 
         :param resize_to_size: resize image (frame) before motion detect for lower CPU usage, default: 100px
@@ -24,7 +24,7 @@ class MoveDetection:
         :param threshold_maxval: maxval for cv2.threshold, default 255
         :param contour_size_detection: the minimum size of the object that must be detected, default: 50
         :param keep_ascpect_ratio: downsize image with keep aspect ratio, default: True
-        '''
+        """
 
         self.resize_to_size = resize_to_size
         self.resize_interpolation = resize_interpolation
@@ -43,12 +43,12 @@ class MoveDetection:
         self.last_detect_time = None
 
     def check(self, new_frame):
-        '''
+        """
         Check if motion has been detected.
 
         :param new_frame: image (frame)
         :return: True if detected object or False if not
-        '''
+        """
         self.contours = []
         if self.keep_ascpect_ratio is True:
             self.frame, self.resize_value = resize2SquareKeepingAspectRation(new_frame, self.resize_to_size,
@@ -85,96 +85,14 @@ class MoveDetection:
             return True
         return False
 
-    # def get_original_coordinates(self, frame):
-    #     '''
-    #     Get the coordinates of the detected motion for the original image.
-    #
-    #     :param frame: image (frame)
-    #     :return: contours for detected object
-    #     '''
-    #     original_contours = []
-    #     if self.keep_ascpect_ratio is True:
-    #         ratio = self.resize_value['ratio']
-    #         x_pos = self.resize_value['x_pos']
-    #         y_pos = self.resize_value['y_pos']
-    #         for c in self.contours:
-    #             (x, y, w, h) = cv2.boundingRect(c)
-    #             x = int(x * ratio - x_pos)
-    #             y = int(y * ratio - y_pos)
-    #             w = int(w * ratio)
-    #             h = int(h * ratio)
-    #             original_contours.append([x, y, w, h])
-    #         return original_contours
-    #     else:
-    #         ratio_x = frame.shape[1] / self.resize_to_size
-    #         ratio_y = frame.shape[0] / self.resize_to_size
-    #         for c in self.contours:
-    #             (x, y, w, h) = cv2.boundingRect(c)
-    #             x = int(x * ratio_x)
-    #             y = int(y * ratio_y)
-    #             w = int(w * ratio_x)
-    #             h = int(h * ratio_y)
-    #             original_contours.append([x, y, w, h])
-    #         return original_contours
-
-    def get_original_coordinates(self, frame):
-        '''
-        Get the coordinates of the detected motion for the original image.
+    def get_original(self, frame):
+        """
+        Get the rectangles data of the detected motion for the original image.
 
         :param frame: image (frame)
-        :return: contours for detected object
-        '''
-        rect_coordinates = []
-        if self.keep_ascpect_ratio is True:
-            ratio = self.resize_value['ratio']
-            x_pos = self.resize_value['x_pos']
-            y_pos = self.resize_value['y_pos']
-            for c in self.contours:
-                (x, y, w, h) = cv2.boundingRect(c)
-                x1 = int(x * ratio - x_pos)
-                y1 = int(y * ratio - y_pos)
-                x2 = int(w * ratio)+x1
-                y2 = int(h * ratio)+y2
-                rect_coordinates.append([x1, y1, x2, y2])
-            return rect_coordinates
-        else:
-            ratio_x = frame.shape[1] / self.resize_to_size
-            ratio_y = frame.shape[0] / self.resize_to_size
-            for c in self.contours:
-                (x, y, w, h) = cv2.boundingRect(c)
-                x1 = int(x * ratio_x)
-                y1 = int(y * ratio_y)
-                x2 = int(w * ratio_x)+x1
-                y2 = int(h * ratio_y)+y2
-                rect_coordinates.append([x1, y1, x2, y2])
-            return rect_coordinates
-
-
-    def get_resize_coordinates(self):
-        '''
-        Get the coordinates of the detected motion for the resized image.
-
-        :return: contours for detected object
-        '''
-        rect_coordinates = []
-        for c in self.contours:
-            (x, y, w, h) = cv2.boundingRect(c)
-            x1 = int(x)
-            y1 = int(y)
-            x2 = int(w)+x1
-            y2 = int(h)+y2
-            rect_coordinates.append([x1, y1, x2, y2])
-        return rect_coordinates
-
-    def draw_on_original_frame(self, frame, color=(0, 255, 0), thickness=1):
-        '''
-        Draw a rectangle in the area where motion has been detected on original frame.
-
-        :param frame: original image (frame)
-        :param color: rectangle color, default: (0, 255, 0)
-        :param thickness: rectangle thickness, default 1
-        :return: image (frame)
-        '''
+        :return: [[x,y,w,h]] for detected object
+        """
+        rect = []
         if self.keep_ascpect_ratio is True:
             ratio = self.resize_value['ratio']
             x_pos = self.resize_value['x_pos']
@@ -185,8 +103,8 @@ class MoveDetection:
                 y = int(y * ratio - y_pos)
                 w = int(w * ratio)
                 h = int(h * ratio)
-                cv2.rectangle(frame, pt1=(x, y), pt2=(x + w, y + h), color=color, thickness=thickness)
-            return frame
+                rect.append([x, y, w, h])
+            return rect
         else:
             ratio_x = frame.shape[1] / self.resize_to_size
             ratio_y = frame.shape[0] / self.resize_to_size
@@ -196,22 +114,115 @@ class MoveDetection:
                 y = int(y * ratio_y)
                 w = int(w * ratio_x)
                 h = int(h * ratio_y)
-                cv2.rectangle(frame, pt1=(x, y), pt2=(x + w, y + h), color=color, thickness=thickness)
-            return frame
+                rect.append([x, y, w, h])
+            return rect
 
-    def draw_on_resized_frame(self, color=(0, 255, 0), thickness=1):
-        '''
+    def get_original_combined(self, frame):
+        """
+        Get the one combined rectangle data of the detected motion for the original image.
+
+        :param frame: image (frame)
+        :return: [[x,y,w,h]] for detected object
+        """
+        x1_list = []
+        y1_list = []
+        x2_list = []
+        y2_list = []
+
+        for c in self.get_original(frame):
+            x1_list.append(c[0])
+            y1_list.append(c[1])
+            x2_list.append(c[2] + c[0])
+            y2_list.append(c[3] + c[1])
+
+        if len(x1_list) > 0 and len(y1_list) > 0 and len(x2_list) > 0 and len(y2_list) > 0:
+            x = min(x1_list)
+            y = min(y1_list)
+            w = max(x2_list) - x
+            h = max(y2_list) - y
+            return [[x, y, w, h]]
+        else:
+            return []
+
+    def get_resize(self):
+        """
+        Get the rectangles data of the detected motion for the resized image.
+
+        :return: [[x,y,w,h]] for detected object
+        """
+        rect_coordinates = []
+        for c in self.contours:
+            (x, y, w, h) = cv2.boundingRect(c)
+            x1 = int(x)
+            y1 = int(y)
+            w = int(w)
+            h = int(h)
+            rect_coordinates.append([x1, y1, w, h])
+        return rect_coordinates
+
+    def get_resize_combined(self, frame):
+        """
+        Get the one combined rectangle data of the detected motion for the resized image.
+
+        :param frame: image (frame)
+        :return: [[x,y,w,h]] for detected object
+        """
+        x1_list = []
+        y1_list = []
+        x2_list = []
+        y2_list = []
+
+        for c in self.get_resize():
+            x1_list.append(c[0])
+            y1_list.append(c[1])
+            x2_list.append(c[2] + c[0])
+            y2_list.append(c[3] + c[1])
+
+        if len(x1_list) > 0 and len(y1_list) > 0 and len(x2_list) > 0 and len(y2_list) > 0:
+            x = min(x1_list)
+            y = min(y1_list)
+            w = max(x2_list) - x
+            h = max(y2_list) - y
+            return [[x, y, w, h]]
+        else:
+            return []
+
+    def draw_original(self, frame, color=(0, 255, 0), thickness=1, combined=False):
+        """
+        Draw a rectangle in the area where motion has been detected on original frame.
+
+        :param frame: original image (frame)
+        :param color: rectangle color, default: (0, 255, 0)
+        :param thickness: rectangle thickness, default: 1
+        :param combined: if True return one combined rectangle data, default: False
+        :return: image (frame)
+        """
+
+        if combined is True:
+            for r in self.get_original_combined(frame):
+                cv2.rectangle(frame, pt1=(r[0], r[1]), pt2=(r[0] + r[2], r[1] + r[3]), color=color, thickness=thickness)
+        else:
+            for r in self.get_original(frame):
+                cv2.rectangle(frame, pt1=(r[0], r[1]), pt2=(r[0] + r[2], r[1] + r[3]), color=color, thickness=thickness)
+
+        return frame
+
+    def draw_resized(self, color=(0, 255, 0), thickness=1, combined=False):
+        """
         Draw a rectangle in the area where motion has been detected on resized frame.
 
         :param color: rectangle color, default: (0, 255, 0)
         :param thickness: rectangle thickness, default: 1
+        :param combined: if True return one combined rectangle data, default: False
         :return: image (frame)
-        '''
-        for c in self.contours:
-            (x, y, w, h) = cv2.boundingRect(c)
-            x = int(x)
-            y = int(y)
-            w = int(w)
-            h = int(h)
-            cv2.rectangle(self.frame, pt1=(x, y), pt2=(x + w, y + h), color=color, thickness=thickness)
+        """
+        if combined is True:
+            for r in self.get_resize_combined():
+                cv2.rectangle(self.frame, pt1=(r[0], r[1]), pt2=(r[0] + r[2], r[1] + r[3]), color=color,
+                              thickness=thickness)
+        else:
+            for r in self.get_resize():
+                cv2.rectangle(self.frame, pt1=(r[0], r[1]), pt2=(r[0] + r[2], r[1] + r[3]), color=color,
+                              thickness=thickness)
+
         return self.frame
