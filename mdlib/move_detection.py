@@ -85,57 +85,90 @@ class MoveDetection:
             return True
         return False
 
-    def get_original_contour(self, frame):
+    # def get_original_coordinates(self, frame):
+    #     '''
+    #     Get the coordinates of the detected motion for the original image.
+    #
+    #     :param frame: image (frame)
+    #     :return: contours for detected object
+    #     '''
+    #     original_contours = []
+    #     if self.keep_ascpect_ratio is True:
+    #         ratio = self.resize_value['ratio']
+    #         x_pos = self.resize_value['x_pos']
+    #         y_pos = self.resize_value['y_pos']
+    #         for c in self.contours:
+    #             (x, y, w, h) = cv2.boundingRect(c)
+    #             x = int(x * ratio - x_pos)
+    #             y = int(y * ratio - y_pos)
+    #             w = int(w * ratio)
+    #             h = int(h * ratio)
+    #             original_contours.append([x, y, w, h])
+    #         return original_contours
+    #     else:
+    #         ratio_x = frame.shape[1] / self.resize_to_size
+    #         ratio_y = frame.shape[0] / self.resize_to_size
+    #         for c in self.contours:
+    #             (x, y, w, h) = cv2.boundingRect(c)
+    #             x = int(x * ratio_x)
+    #             y = int(y * ratio_y)
+    #             w = int(w * ratio_x)
+    #             h = int(h * ratio_y)
+    #             original_contours.append([x, y, w, h])
+    #         return original_contours
+
+    def get_original_coordinates(self, frame):
         '''
         Get the coordinates of the detected motion for the original image.
 
         :param frame: image (frame)
         :return: contours for detected object
         '''
-        original_contours = []
+        rect_coordinates = []
         if self.keep_ascpect_ratio is True:
             ratio = self.resize_value['ratio']
             x_pos = self.resize_value['x_pos']
             y_pos = self.resize_value['y_pos']
             for c in self.contours:
                 (x, y, w, h) = cv2.boundingRect(c)
-                x = int(x * ratio - x_pos)
-                y = int(y * ratio - y_pos)
-                w = int(w * ratio)
-                h = int(h * ratio)
-                original_contours.append([x, y, w, h])
-            return original_contours
+                x1 = int(x * ratio - x_pos)
+                y1 = int(y * ratio - y_pos)
+                x2 = int(w * ratio)+x1
+                y2 = int(h * ratio)+y2
+                rect_coordinates.append([x1, y1, x2, y2])
+            return rect_coordinates
         else:
             ratio_x = frame.shape[1] / self.resize_to_size
             ratio_y = frame.shape[0] / self.resize_to_size
             for c in self.contours:
                 (x, y, w, h) = cv2.boundingRect(c)
-                x = int(x * ratio_x)
-                y = int(y * ratio_y)
-                w = int(w * ratio_x)
-                h = int(h * ratio_y)
-                original_contours.append([x, y, w, h])
-            return original_contours.append([x, y, w, h])
+                x1 = int(x * ratio_x)
+                y1 = int(y * ratio_y)
+                x2 = int(w * ratio_x)+x1
+                y2 = int(h * ratio_y)+y2
+                rect_coordinates.append([x1, y1, x2, y2])
+            return rect_coordinates
 
-    def get_resized_contour(self):
+
+    def get_resize_coordinates(self):
         '''
         Get the coordinates of the detected motion for the resized image.
 
         :return: contours for detected object
         '''
-        resized_contours = []
+        rect_coordinates = []
         for c in self.contours:
             (x, y, w, h) = cv2.boundingRect(c)
-            x = int(x)
-            y = int(y)
-            w = int(w)
-            h = int(h)
-            resized_contours.append([x, y, w, h])
-        return resized_contours
+            x1 = int(x)
+            y1 = int(y)
+            x2 = int(w)+x1
+            y2 = int(h)+y2
+            rect_coordinates.append([x1, y1, x2, y2])
+        return rect_coordinates
 
-    def draw_contour_on_original_frame(self, frame, color=(0, 255, 0), thickness=1):
+    def draw_on_original_frame(self, frame, color=(0, 255, 0), thickness=1):
         '''
-        Draw contours on original frame.
+        Draw a rectangle in the area where motion has been detected on original frame.
 
         :param frame: original image (frame)
         :param color: rectangle color, default: (0, 255, 0)
@@ -166,9 +199,9 @@ class MoveDetection:
                 cv2.rectangle(frame, pt1=(x, y), pt2=(x + w, y + h), color=color, thickness=thickness)
             return frame
 
-    def draw_contour_on_resized_frame(self, color=(0, 255, 0), thickness=1):
+    def draw_on_resized_frame(self, color=(0, 255, 0), thickness=1):
         '''
-        Draw contours on resized frame.
+        Draw a rectangle in the area where motion has been detected on resized frame.
 
         :param color: rectangle color, default: (0, 255, 0)
         :param thickness: rectangle thickness, default: 1
