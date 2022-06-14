@@ -24,8 +24,10 @@ from mdlib import MoveDetection
 
 cap = cv2.VideoCapture(0)
 MD = MoveDetection()
-if MD.check() is True:
-    print('Move detect')
+while True:
+    ret, frame = cap.read()
+    if MD.check(frame) is True:
+        print('Move detect')
 ```
 
 ## Class and methods description
