@@ -206,10 +206,11 @@ class MoveDetection:
 
         return frame
 
-    def draw_resized(self, color=(0, 255, 0), thickness=1, combined=False):
+    def draw_resized(self, frame, color=(0, 255, 0), thickness=1, combined=False):
         """
         Draw a rectangle in the area where motion has been detected on resized frame.
 
+        :param frame: resized image (frame)
         :param color: rectangle color, default: (0, 255, 0)
         :param thickness: rectangle thickness, default: 1
         :param combined: if True return one combined rectangle data, default: False
@@ -217,11 +218,11 @@ class MoveDetection:
         """
         if combined is True:
             for r in self.get_resize_combined():
-                cv2.rectangle(self.frame, pt1=(r[0], r[1]), pt2=(r[0] + r[2], r[1] + r[3]), color=color,
+                cv2.rectangle(frame, pt1=(r[0], r[1]), pt2=(r[0] + r[2], r[1] + r[3]), color=color,
                               thickness=thickness)
         else:
             for r in self.get_resize():
-                cv2.rectangle(self.frame, pt1=(r[0], r[1]), pt2=(r[0] + r[2], r[1] + r[3]), color=color,
+                cv2.rectangle(frame, pt1=(r[0], r[1]), pt2=(r[0] + r[2], r[1] + r[3]), color=color,
                               thickness=thickness)
 
-        return self.frame
+        return frame
