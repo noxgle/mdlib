@@ -94,7 +94,8 @@ while True:
 #### draw_resized
 
         Draw a rectangle in the area where motion has been detected on resized frame.
-
+        
+        :param frame: resized image (frame)
         :param color: rectangle color, default: (0, 255, 0)
         :param thickness: rectangle thickness, default: 1
         :param combined: if True return one combined rectangle data, default: False
