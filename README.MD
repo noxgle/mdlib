@@ -100,3 +100,5 @@ while True:
         :param thickness: rectangle thickness, default: 1
         :param combined: if True return one combined rectangle data, default: False
         :return: image (frame)
+
+Shorten link with: https://lvk.pl
