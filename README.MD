@@ -101,4 +101,4 @@ while True:
         :param combined: if True return one combined rectangle data, default: False
         :return: image (frame)
 
-Shorten link with: https://lvk.pl
+[Shorten link](https://lvk.pl)
