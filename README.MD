@@ -7,8 +7,8 @@ Mdlib is used to detect motion on resized image (frame).
 At the moment, the installation looks like this :
 
 * By pip install git+https://github.com/noxgle/mdlib.git
-* Web browser: [mdlib](https://lvk.pl/xHTI8Oo)
-* Console: wget -O move_detection.py https://lvk.pl/xHTI8Oo
+* Web browser: [mdlib](https://lvk.pl/iYnoL-Y)
+* Console: wget -O move_detection.py https://lvk.pl/iYnoL-Y
 
 ### Installation dependencies
 
